@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Apodio App öffnen</title>
+  <script>
+    function openApodio() {
+      var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+      // App URL Scheme
+      var appLink = "apodio://";
+      // Fallback Links
+      var iosStoreLink = "https://apps.apple.com/us/app/apodio/id6741919570";
+      var androidStoreLink = "https://play.google.com/store/apps/details?id=de.noventi.schlossmontabur";
+
+      var now = Date.now();
+      var timeout = 1500; // 1,5 Sekunden warten
+
+      if (/android/i.test(userAgent)) {
+        // Android
+        window.location = appLink;
+        setTimeout(function() {
+          if (Date.now() - now < timeout + 500) {
+            window.location = androidStoreLink;
+          }
+        }, timeout);
+      } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        // iOS
+        window.location = appLink;
+        setTimeout(function() {
+          if (Date.now() - now < timeout + 500) {
+            window.location = iosStoreLink;
+          }
+        }, timeout);
+      } else {
+        // Fallback: Desktop oder unbekanntes System
+        window.location.href = "https://apodio.de"; // oder eine Infoseite deiner Wahl
+      }
+    }
+  </script>
+</head>
+<body onload="openApodio()">
+  <h1>Apodio wird geöffnet...</h1>
+  <p>Falls nichts passiert, <a href="apodio://" id="openLink">klicke hier</a>.</p>
+</body>
+</html>
