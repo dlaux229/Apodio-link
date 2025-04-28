@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apodio App öffnen</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #4c83ff, #7c4dff);
+      color: white;
+      text-align: center;
+      padding: 50px;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+    .button {
+      background-color: #ffffff;
+      color: #4c83ff;
+      border: none;
+      padding: 15px 30px;
+      font-size: 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .button:hover {
+      background-color: #f0f0f0;
+    }
+    .loader {
+      margin-top: 20px;
+      border: 6px solid #ffffff;
+      border-top: 6px solid #4c83ff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      display: none;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+  <script>
+    function openApodio() {
+      var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+      var appLink = "apodio://"; // Custom URL Scheme
+      var iosStoreLink = "https://apps.apple.com/us/app/apodio/id6741919570"; // iOS App Store
+      var androidStoreLink = "https://play.google.com/store/apps/details?id=de.noventi.schlossmontabur"; // Android Play Store
+
+      var now = Date.now();
+      var timeout = 1500; // 1,5 Sekunden warten
+      var storeLink = '';
+
+      if (/android/i.test(userAgent)) {
+        storeLink = androidStoreLink;
+      } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        storeLink = iosStoreLink;
+      } else {
+        storeLink = "https://apodio.de"; // Desktop
+      }
+
+      // Zeige Loader
+      document.getElementById('loader').style.display = 'block';
+
+      // Versuche App zu öffnen
+      window.location = appLink;
+
+      // Wenn es nach 1,5 Sekunden nicht geöffnet wurde, leite auf den Store weiter
+      setTimeout(function() {
+        if (Date.now() - now < timeout + 500) {
+          window.location = storeLink;
+        }
+      }, timeout);
+    }
+
+    // Seite sofort laden und versuchen, App zu öffnen
+    window.onload = openApodio;
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Apodio starten</h1>
+    <p>Starte jetzt die Apodio App auf deinem Gerät!</p>
+    <button class="button" onclick="openApodio()">App öffnen</button>
+    <div id="loader" class="loader"></div>
+    <p style="margin-top: 30px;">Falls nichts passiert, lade Apodio im Store herunter.</p>
+  </div>
+</body>
+</html>
+
